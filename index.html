@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circuito de Treinamento | #VemProCT</title>
+  <meta name="description" content="Academia Circuito de Treinamento: musculação, crossfit, funcional na areia, assessoria de corrida, natação e hidroginástica." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ctRed: '#e50914',
+            ctRedDark: '#8b0008',
+            ctBlack: '#050505',
+            ctGraphite: '#111111',
+            ctCard: '#191919',
+            ctLine: '#2d2d2d'
+          },
+          boxShadow: {
+            red: '0 0 35px rgba(229, 9, 20, .55)',
+            soft: '0 24px 70px rgba(0,0,0,.45)',
+            brutal: '8px 8px 0 rgba(229,9,20,.75)'
+          },
+          fontFamily: {
+            display: ['Impact', 'Arial Black', 'system-ui', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      color: white;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(229, 9, 20, .32), transparent 24%),
+        radial-gradient(circle at 92% 20%, rgba(229, 9, 20, .22), transparent 18%),
+        radial-gradient(circle at 45% 80%, rgba(229, 9, 20, .13), transparent 22%),
+        #050505;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: .08;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .glass {
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: 0 24px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(16px);
+    }
+
+    .carbon {
+      background-color: #141414;
+      background-image:
+        linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,.035) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,.035) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.035) 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+    }
+
+    .title-strong {
+      letter-spacing: .025em;
+      text-shadow:
+        0 2px 0 #8a8a8a,
+        0 4px 0 #333,
+        0 12px 28px rgba(0,0,0,.85);
+    }
+
+    .stroke-text {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.42);
+      text-stroke: 1px rgba(255,255,255,.42);
+    }
+
+    .marquee-track {
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .hero-slide {
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity .8s ease, transform 1.2s ease;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: .75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modalidade-card:hover .card-number {
+      color: #e50914;
+      -webkit-text-stroke: 0 transparent;
+    }
+
+    .tab-active {
+      background: #e50914;
+      color: #fff;
+      box-shadow: 0 0 24px rgba(229, 9, 20, .65);
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+    .menu-link.active { background: #e50914; color: #fff; }
+  </style>
+</head>
+
+<body class="font-body selection:bg-ctRed selection:text-white">
+  <header class="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/75 backdrop-blur-2xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+      <a href="#inicio" class="nav-home flex items-center gap-3">
+        <div class="relative grid h-12 w-12 place-items-center rounded-2xl bg-ctRed shadow-red">
+          <span class="font-display text-xl leading-none">CT</span>
+          <span class="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-white"></span>
+        </div>
+        <div>
+          <p class="font-display text-xl uppercase leading-none tracking-wide">Circuito</p>
+          <p class="text-xs font-black uppercase tracking-[.32em] text-ctRed">Treinamento</p>
+        </div>
+      </a>
+
+      <button id="menuBtn" class="rounded-xl border border-white/15 px-4 py-2 text-sm font-black uppercase tracking-widest lg:hidden">
+        Menu
+      </button>
+
+      <nav id="menu" class="hidden absolute left-4 right-4 top-[76px] rounded-3xl border border-white/10 bg-black/95 p-3 shadow-2xl lg:static lg:flex lg:items-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#inicio">Início</a>
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#modalidades">Modalidades</a>
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#horarios">Horários</a>
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#planos">Planos</a>
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#sobre">Sobre</a>
+        <a class="menu-link block rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider text-white/70 transition hover:bg-ctRed hover:text-white lg:py-2" href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="page active">
+      <section class="relative min-h-screen overflow-hidden pt-24">
+        <div id="heroSlides" class="absolute inset-0 -z-10"></div>
+        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black via-black/78 to-black/30"></div>
+        <div class="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-ctBlack to-transparent"></div>
+
+        <div class="mx-auto grid min-h-[calc(100vh-6rem)] max-w-7xl items-center gap-10 px-4 py-16 lg:grid-cols-[1.08fr_.92fr] lg:px-8">
+          <div class="reveal">
+            <div class="mb-6 inline-flex items-center gap-3 rounded-full border border-ctRed/50 bg-black/45 px-4 py-2 text-sm font-black uppercase tracking-[.26em] text-white shadow-red">
+              <span class="h-2.5 w-2.5 rounded-full bg-ctRed"></span>
+              Academia completa
+            </div>
+
+            <h1 class="font-display text-5xl uppercase leading-[.88] title-strong sm:text-7xl lg:text-8xl">
+              Sua nova<br />
+              fase começa<br />
+              no CT.
+            </h1>
+
+            <p class="mt-7 max-w-2xl text-lg leading-8 text-white/72">
+              Um espaço intenso, moderno e com personalidade para quem quer treinar de verdade. Musculação, Crossfit, Funcional na Areia, Corrida, Natação e Hidroginástica em uma experiência única.
+            </p>
+
+            <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+              <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="rounded-2xl bg-ctRed px-8 py-4 text-center font-display text-lg uppercase tracking-wide shadow-red transition hover:-translate-y-1 hover:bg-red-600">
+                Entrar em contato
+              </a>
+              <a href="#modalidades" class="rounded-2xl border border-white/18 bg-white/8 px-8 py-4 text-center font-display text-lg uppercase tracking-wide backdrop-blur transition hover:-translate-y-1 hover:bg-white/12">
+                Conhecer modalidades
+              </a>
+            </div>
+          </div>
+
+          <aside class="reveal glass relative overflow-hidden rounded-[2.5rem] p-5 lg:p-7">
+            <div class="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-ctRed/25 blur-3xl"></div>
+            <div class="relative rounded-[2rem] border border-white/10 bg-black/50 p-5">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="font-display text-2xl uppercase text-white/70">Em destaque</p>
+                  <h2 id="heroCardTitle" class="mt-1 font-display text-5xl uppercase title-strong">Crossfit</h2>
+                </div>
+                <span id="heroCardIcon" class="grid h-16 w-16 place-items-center rounded-2xl bg-ctRed text-3xl shadow-red">🔥</span>
+              </div>
+
+              <p id="heroCardText" class="mt-7 min-h-24 text-lg leading-8 text-white/70">
+                Treinos coletivos de alta intensidade para força, condicionamento e superação diária.
+              </p>
+
+              <div class="mt-7 grid grid-cols-3 gap-3">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
+                  <p class="font-display text-3xl">6</p>
+                  <p class="text-xs uppercase tracking-widest text-white/45">Áreas</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
+                  <p class="font-display text-3xl">05H</p>
+                  <p class="text-xs uppercase tracking-widest text-white/45">Abertura</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
+                  <p class="font-display text-3xl">CT</p>
+                  <p class="text-xs uppercase tracking-widest text-white/45">Fitness</p>
+                </div>
+              </div>
+
+              <button id="heroDetailsBtn" class="mt-7 w-full rounded-2xl bg-white px-6 py-4 font-display text-lg uppercase tracking-wide text-black transition hover:bg-ctRed hover:text-white">
+                Ver detalhes
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <div class="absolute bottom-6 left-0 right-0 overflow-hidden border-y border-white/10 bg-black/50 py-3 backdrop-blur">
+          <div class="marquee-track flex gap-8 font-display text-3xl uppercase tracking-wider text-white/85">
+            <span>Musculação</span><span class="text-ctRed">•</span><span>Crossfit</span><span class="text-ctRed">•</span><span>Funcional na Areia</span><span class="text-ctRed">•</span><span>Assessoria de Corrida</span><span class="text-ctRed">•</span><span>Natação</span><span class="text-ctRed">•</span><span>Hidroginástica</span><span class="text-ctRed">•</span>
+            <span>Musculação</span><span class="text-ctRed">•</span><span>Crossfit</span><span class="text-ctRed">•</span><span>Funcional na Areia</span><span class="text-ctRed">•</span><span>Assessoria de Corrida</span><span class="text-ctRed">•</span><span>Natação</span><span class="text-ctRed">•</span><span>Hidroginástica</span><span class="text-ctRed">•</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="modalidades" class="relative py-28">
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <div class="reveal flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <div>
+              <p class="font-display text-lg uppercase tracking-[.35em] text-ctRed">Modalidades</p>
+              <h2 class="mt-3 max-w-3xl font-display text-4xl uppercase leading-none title-strong sm:text-6xl">
+                Escolha o treino que combina com sua meta
+              </h2>
+            </div>
+            <p class="max-w-xl text-white/62">
+              Cada modalidade tem uma página própria com detalhes, benefícios, rotina, perfil indicado e horários de referência.
+            </p>
+          </div>
+
+          <div id="modalidadesGrid" class="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+        </div>
+      </section>
+
+      <section id="horarios" class="relative overflow-hidden bg-gradient-to-b from-black via-ctRedDark/28 to-black py-28">
+        <div class="absolute left-0 top-16 h-72 w-72 rounded-full bg-ctRed/20 blur-3xl"></div>
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <div class="reveal mx-auto max-w-3xl text-center">
+            <p class="font-display text-lg uppercase tracking-[.35em] text-ctRed">Grade CT</p>
+            <h2 class="mt-3 font-display text-4xl uppercase title-strong sm:text-6xl">Horários principais</h2>
+            <p class="mt-5 text-white/62">Consulte as turmas disponíveis e confirme vagas pelo WhatsApp.</p>
+          </div>
+
+          <div class="mt-14 grid gap-6 lg:grid-cols-[.9fr_1.1fr]">
+            <div class="reveal glass rounded-[2.2rem] p-6">
+              <div class="rounded-[1.7rem] bg-ctRed p-6 shadow-red">
+                <p class="font-display text-3xl uppercase title-strong">Musculação</p>
+                <p class="mt-2 text-white/78">Horário amplo para encaixar o treino na rotina.</p>
+              </div>
+              <div class="mt-5 space-y-4">
+                <div class="carbon rounded-3xl border border-white/10 p-6">
+                  <p class="font-black uppercase tracking-widest text-ctRed">Segunda a Sexta</p>
+                  <p class="mt-2 font-display text-5xl title-strong">05H ÀS 22H</p>
+                </div>
+                <div class="carbon rounded-3xl border border-white/10 p-6">
+                  <p class="font-black uppercase tracking-widest text-ctRed">Sábado</p>
+                  <p class="mt-2 font-display text-5xl title-strong">08H ÀS 13H</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="reveal glass rounded-[2.2rem] p-6">
+              <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="font-display text-3xl uppercase">Turmas coletivas</p>
+                  <p class="mt-1 text-white/55">Clique para alternar.</p>
+                </div>
+                <span class="rounded-full border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-white/65">Seg a Sex</span>
+              </div>
+              <div id="scheduleTabs" class="mb-6 flex flex-wrap gap-2"></div>
+              <div id="scheduleContent" class="grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="planos" class="py-28">
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <div class="reveal mx-auto max-w-3xl text-center">
+            <p class="font-display text-lg uppercase tracking-[.35em] text-ctRed">Planos</p>
+            <h2 class="mt-3 font-display text-4xl uppercase title-strong sm:text-6xl">Planos mensais</h2>
+            <p class="mt-5 text-white/62">Valores de referência para apresentar no site. Você pode ajustar no código quando necessário.</p>
+          </div>
+
+          <div id="pricingGrid" class="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+        </div>
+      </section>
+
+      <section id="sobre" class="relative overflow-hidden bg-ctRed py-28">
+        <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,0,0,.15),rgba(0,0,0,.72))]"></div>
+        <div class="relative mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[.85fr_1.15fr] lg:items-center lg:px-8">
+          <div class="reveal carbon rounded-[2.5rem] border border-white/15 p-8 shadow-brutal">
+            <p class="font-display text-7xl uppercase leading-none title-strong">#Vem<br />Pro<br />CT</p>
+            <div class="mt-8 grid grid-cols-2 gap-3">
+              <div class="rounded-2xl bg-black/45 p-5"><p class="font-display text-4xl">01</p><p class="text-sm uppercase tracking-widest text-white/60">Treino</p></div>
+              <div class="rounded-2xl bg-black/45 p-5"><p class="font-display text-4xl">02</p><p class="text-sm uppercase tracking-widest text-white/60">Energia</p></div>
+              <div class="rounded-2xl bg-black/45 p-5"><p class="font-display text-4xl">03</p><p class="text-sm uppercase tracking-widest text-white/60">Evolução</p></div>
+              <div class="rounded-2xl bg-black/45 p-5"><p class="font-display text-4xl">04</p><p class="text-sm uppercase tracking-widest text-white/60">Comunidade</p></div>
+            </div>
+          </div>
+          <div class="reveal">
+            <p class="font-display text-lg uppercase tracking-[.35em] text-white/70">Sobre</p>
+            <h2 class="mt-3 font-display text-4xl uppercase leading-none title-strong sm:text-6xl">
+              Uma academia com atitude, rotina e presença.
+            </h2>
+            <p class="mt-7 text-lg leading-8 text-white/80">
+              O Circuito de Treinamento foi pensado para quem procura mais do que um espaço para se exercitar. A proposta é criar um ambiente de movimento, disciplina e motivação, com modalidades para diferentes objetivos e estilos de vida.
+            </p>
+            <p class="mt-4 text-lg leading-8 text-white/80">
+              A identidade forte do CT aparece em cada detalhe: comunicação marcante, treinos intensos, equipe presente e uma comunidade que incentiva você a continuar.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contato" class="py-28">
+        <div class="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-[1fr_.9fr] lg:px-8">
+          <div class="reveal">
+            <p class="font-display text-lg uppercase tracking-[.35em] text-ctRed">Contato</p>
+            <h2 class="mt-3 font-display text-4xl uppercase title-strong sm:text-6xl">Pronto para começar?</h2>
+            <p class="mt-5 max-w-2xl text-white/62">Tire dúvidas, conheça planos, confirme horários ou veja como chegar.</p>
+
+            <div class="mt-9 grid gap-4 sm:grid-cols-2">
+              <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="glass rounded-[2rem] p-6 transition hover:-translate-y-1 hover:border-ctRed">
+                <p class="font-display text-3xl uppercase">WhatsApp</p>
+                <p class="mt-2 text-white/60">Atendimento para planos, horários e matrícula.</p>
+                <span class="mt-7 inline-flex rounded-2xl bg-ctRed px-5 py-3 font-black uppercase shadow-red">Chamar agora</span>
+              </a>
+              <a href="https://maps.app.goo.gl/3g7mPfYMQab4RU1B9" target="_blank" class="glass rounded-[2rem] p-6 transition hover:-translate-y-1 hover:border-ctRed">
+                <p class="font-display text-3xl uppercase">Localização</p>
+                <p class="mt-2 text-white/60">Abra a rota e venha conhecer o CT.</p>
+                <span class="mt-7 inline-flex rounded-2xl border border-white/15 px-5 py-3 font-black uppercase">Abrir mapa</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="reveal glass rounded-[2.5rem] p-6">
+            <p class="font-display text-3xl uppercase">Instagram</p>
+            <p class="mt-2 text-white/62">Acompanhe treinos, avisos, eventos e conteúdos.</p>
+            <div class="mt-6 overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+              <div class="aspect-[4/5] bg-gradient-to-br from-ctRed via-black to-ctGraphite p-7">
+                <div class="flex h-full flex-col justify-between">
+                  <div>
+                    <p class="font-display text-5xl uppercase title-strong">Circuito</p>
+                    <p class="font-display text-5xl uppercase title-strong">de Treinamento</p>
+                    <p class="mt-4 text-white/70">@circuito_de_treinamento</p>
+                  </div>
+                  <a href="https://www.instagram.com/circuito_de_treinamento/" target="_blank" class="rounded-2xl bg-white px-6 py-4 text-center font-display text-xl uppercase text-black transition hover:bg-ctRed hover:text-white">
+                    Abrir Instagram
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="modalidadePage" class="page pt-24">
+      <div class="relative overflow-hidden border-b border-white/10 bg-black">
+        <div id="detailHero" class="absolute inset-0 opacity-45"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/88 to-black/40"></div>
+        <div class="relative mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
+          <button id="backHome" class="mb-8 rounded-2xl border border-white/15 bg-white/8 px-5 py-3 font-black uppercase tracking-widest text-white/75 transition hover:bg-ctRed hover:text-white">
+            ← Voltar para o site
+          </button>
+          <div class="max-w-4xl">
+            <p id="detailEyebrow" class="font-display text-lg uppercase tracking-[.35em] text-ctRed">Modalidade</p>
+            <h1 id="detailTitle" class="mt-4 font-display text-6xl uppercase leading-none title-strong sm:text-8xl">Musculação</h1>
+            <p id="detailSubtitle" class="mt-7 max-w-2xl text-xl leading-8 text-white/72">Detalhes da modalidade.</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="py-20">
+        <div class="mx-auto grid max-w-7xl gap-7 px-4 lg:grid-cols-[1.1fr_.9fr] lg:px-8">
+          <div class="space-y-7">
+            <article class="glass rounded-[2.2rem] p-7">
+              <h2 class="font-display text-4xl uppercase title-strong">Sobre a modalidade</h2>
+              <p id="detailAbout" class="mt-5 text-lg leading-8 text-white/70"></p>
+            </article>
+
+            <article class="glass rounded-[2.2rem] p-7">
+              <h2 class="font-display text-4xl uppercase title-strong">Benefícios</h2>
+              <div id="detailBenefits" class="mt-6 grid gap-3 sm:grid-cols-2"></div>
+            </article>
+
+            <article class="glass rounded-[2.2rem] p-7">
+              <h2 class="font-display text-4xl uppercase title-strong">Para quem é indicado?</h2>
+              <p id="detailAudience" class="mt-5 text-lg leading-8 text-white/70"></p>
+            </article>
+          </div>
+
+          <aside class="space-y-7">
+            <div class="carbon rounded-[2.2rem] border border-white/10 p-7 shadow-soft">
+              <p class="font-display text-3xl uppercase">Resumo rápido</p>
+              <div id="detailStats" class="mt-6 space-y-3"></div>
+              <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="mt-7 block rounded-2xl bg-ctRed px-6 py-4 text-center font-display text-lg uppercase shadow-red transition hover:bg-red-600">
+                Quero essa modalidade
+              </a>
+            </div>
+
+            <div class="glass rounded-[2.2rem] p-7">
+              <p class="font-display text-3xl uppercase">Horários</p>
+              <div id="detailSchedule" class="mt-5 grid grid-cols-2 gap-3"></div>
+              <p class="mt-5 text-sm leading-6 text-white/50">Horários sujeitos a disponibilidade de turma. Confirme pelo WhatsApp antes de ir.</p>
+            </div>
+
+            <div class="glass rounded-[2.2rem] p-7">
+              <p class="font-display text-3xl uppercase">Outras modalidades</p>
+              <div id="otherModalidades" class="mt-5 space-y-2"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-black py-8">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center text-sm text-white/55 lg:flex-row lg:px-8 lg:text-left">
+      <p>© <span id="year"></span> Circuito de Treinamento. Todos os direitos reservados.</p>
+      <div class="flex gap-4">
+        <a href="#inicio" class="nav-home hover:text-white">Topo</a>
+        <a href="https://www.instagram.com/circuito_de_treinamento/" target="_blank" class="hover:text-white">Instagram</a>
+        <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="hover:text-white">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="fixed bottom-5 right-5 z-50 rounded-full bg-ctRed px-5 py-4 font-display uppercase tracking-wide text-white shadow-red transition hover:-translate-y-1">
+    WhatsApp
+  </a>
+
+  <script>
+    const modalidades = [
+      {
+        slug: 'musculacao',
+        nome: 'Musculação',
+        icon: '🏋️',
+        tag: 'Força, estética e rotina',
+        resumo: 'Treine com liberdade, estrutura e horário amplo para evoluir no seu ritmo.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.3), rgba(0,0,0,.9)), radial-gradient(circle at 75% 30%, rgba(229,9,20,.6), transparent 24%), linear-gradient(135deg, #e50914, #050505 58%)',
+        about: 'A musculação é a base para quem busca força, hipertrofia, emagrecimento, melhora postural e condicionamento. No CT, a proposta é oferecer um ambiente intenso e organizado para você construir constância, respeitando seu nível atual e seu objetivo.',
+        audience: 'Indicada para iniciantes, intermediários e avançados. Serve para quem quer ganhar massa muscular, perder gordura, melhorar saúde, fortalecer articulações ou simplesmente criar uma rotina mais ativa.',
+        benefits: ['Ganho de força', 'Hipertrofia muscular', 'Melhora da postura', 'Auxílio no emagrecimento', 'Mais disposição', 'Treino adaptável'],
+        schedule: ['Seg a Sex: 05H às 22H', 'Sábado: 08H às 13H'],
+        stats: ['Intensidade: ajustável', 'Frequência: até 6x/semana', 'Objetivo: força e estética']
+      },
+      {
+        slug: 'crossfit',
+        nome: 'Crossfit',
+        icon: '🔥',
+        tag: 'Alta intensidade e superação',
+        resumo: 'Aulas dinâmicas para condicionamento, força, explosão e evolução diária.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.25), rgba(0,0,0,.9)), radial-gradient(circle at 20% 25%, rgba(229,9,20,.75), transparent 28%), linear-gradient(135deg, #2a0003, #070707)',
+        about: 'O Crossfit mistura exercícios funcionais, força, resistência e intensidade. Cada aula tem um desafio diferente, criando um ambiente coletivo, energético e motivador para você evoluir no físico e na mente.',
+        audience: 'Ideal para quem gosta de aulas coletivas, desafios, treinos variados e sensação de comunidade. Pode ser adaptado para diferentes níveis, desde quem está começando até quem já treina há anos.',
+        benefits: ['Condicionamento físico', 'Força e potência', 'Treinos variados', 'Ambiente motivador', 'Gasto calórico alto', 'Evolução de performance'],
+        schedule: ['06H', '07H', '08H', '12H', '16H', '17H', '18H', '19H', '20H', 'Sáb: 08H30'],
+        stats: ['Intensidade: alta', 'Frequência: 2x ou 3x/semana', 'Objetivo: performance']
+      },
+      {
+        slug: 'funcional-na-areia',
+        nome: 'Funcional na Areia',
+        icon: '⚡',
+        tag: 'Resistência, agilidade e energia',
+        resumo: 'Treinos completos para resistência, emagrecimento, potência e condicionamento.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.25), rgba(0,0,0,.88)), radial-gradient(circle at 78% 35%, rgba(229,9,20,.7), transparent 24%), linear-gradient(135deg, #e50914, #151515)',
+        about: 'O funcional na areia trabalha o corpo de forma global, com movimentos dinâmicos, exercícios de resistência, agilidade, coordenação e força. A areia aumenta o desafio e torna o treino mais intenso e divertido.',
+        audience: 'Perfeito para quem busca emagrecimento, condicionamento, melhora do fôlego e treinos com clima mais descontraído, sem deixar de lado intensidade e resultado.',
+        benefits: ['Mais resistência', 'Agilidade', 'Coordenação motora', 'Gasto calórico', 'Fortalecimento global', 'Treino dinâmico'],
+        schedule: ['06H', '07H', '08H', '16H', '17H', '18H', '19H', '20H'],
+        stats: ['Intensidade: média/alta', 'Frequência: 3x ou 5x/semana', 'Objetivo: condicionamento']
+      },
+      {
+        slug: 'assessoria-de-corrida',
+        nome: 'Assessoria de Corrida',
+        icon: '🏃',
+        tag: 'Ritmo, evolução e constância',
+        resumo: 'Treinos planejados para desenvolver fôlego, ritmo, resistência e performance.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.25), rgba(0,0,0,.9)), radial-gradient(circle at 35% 35%, rgba(229,9,20,.65), transparent 24%), linear-gradient(135deg, #111, #8b0008)',
+        about: 'A assessoria de corrida ajuda você a treinar com organização, respeitando progressão, intensidade e recuperação. É uma forma mais segura e motivadora de evoluir nas ruas, provas e desafios pessoais.',
+        audience: 'Indicada para quem quer começar a correr, melhorar tempo, aumentar distância, participar de provas ou criar disciplina com orientação.',
+        benefits: ['Melhora do fôlego', 'Planejamento de treino', 'Mais resistência', 'Evolução gradual', 'Motivação em grupo', 'Preparo para provas'],
+        schedule: ['3x na semana'],
+        stats: ['Intensidade: progressiva', 'Frequência: 3x/semana', 'Objetivo: corrida']
+      },
+      {
+        slug: 'natacao',
+        nome: 'Natação',
+        icon: '🏊',
+        tag: 'Técnica, saúde e resistência',
+        resumo: 'Aulas para respiração, coordenação, condicionamento e bem-estar.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.2), rgba(0,0,0,.9)), radial-gradient(circle at 75% 35%, rgba(229,9,20,.55), transparent 24%), linear-gradient(135deg, #0b0b0b, #2a0003)',
+        about: 'A natação é uma modalidade completa, com baixo impacto e grande benefício cardiovascular. Trabalha respiração, coordenação, força e resistência, sendo excelente para saúde e condicionamento.',
+        audience: 'Indicada para crianças, jovens e adultos que buscam aprender, melhorar técnica, ganhar condicionamento ou praticar uma atividade completa e segura.',
+        benefits: ['Baixo impacto', 'Melhora da respiração', 'Condicionamento', 'Coordenação', 'Fortalecimento', 'Bem-estar'],
+        schedule: ['08H', '16H', '17H', '18H', '19H', '20H'],
+        stats: ['Intensidade: moderada', 'Frequência: 1x ou 2x/semana', 'Objetivo: técnica e saúde']
+      },
+      {
+        slug: 'hidroginastica',
+        nome: 'Hidroginástica',
+        icon: '💧',
+        tag: 'Movimento, saúde e baixo impacto',
+        resumo: 'Aulas leves, eficientes e seguras para qualidade de vida e fortalecimento.',
+        image: 'linear-gradient(135deg, rgba(0,0,0,.22), rgba(0,0,0,.9)), radial-gradient(circle at 28% 30%, rgba(229,9,20,.65), transparent 24%), linear-gradient(135deg, #8b0008, #050505)',
+        about: 'A hidroginástica combina exercícios na água com baixo impacto nas articulações. É uma modalidade excelente para saúde, mobilidade, fortalecimento e bem-estar, com aulas acolhedoras e eficientes.',
+        audience: 'Indicada para quem procura uma atividade segura, especialmente pessoas que preferem menor impacto, querem melhorar mobilidade, disposição e qualidade de vida.',
+        benefits: ['Baixo impacto', 'Melhora da mobilidade', 'Fortalecimento', 'Bem-estar', 'Saúde cardiovascular', 'Aula acolhedora'],
+        schedule: ['Seg/Qua/Sex: 07H', 'Ter/Qui: 18H'],
+        stats: ['Intensidade: leve/moderada', 'Frequência: 2x ou 3x/semana', 'Objetivo: saúde']
+      }
+    ];
+
+    const planos = [
+      { nome: 'Musculação', destaque: false, opcoes: [{freq: '6x na semana', valor: 'R$ 100,00'}, {freq: '3x na semana', valor: 'R$ 80,00'}] },
+      { nome: 'Funcional CT', destaque: false, opcoes: [{freq: '3x na semana', valor: 'R$ 80,00'}, {freq: '5x na semana', valor: 'R$ 100,00'}] },
+      { nome: 'Crossfit', destaque: true, opcoes: [{freq: '2x na semana', valor: 'R$ 140,00'}, {freq: '3x na semana', valor: 'R$ 170,00'}] },
+      { nome: 'Natação', destaque: false, opcoes: [{freq: '1x na semana', valor: 'R$ 80,00'}, {freq: '2x na semana', valor: 'R$ 110,00'}] },
+      { nome: 'Grupo de Corrida', destaque: false, opcoes: [{freq: '3x na semana', valor: 'R$ 110,00'}] },
+      { nome: 'Hidroginástica', destaque: false, opcoes: [{freq: '2x na semana', valor: 'R$ 100,00'}, {freq: '3x na semana', valor: 'R$ 120,00'}] }
+    ];
+
+    const schedules = {
+      'Crossfit': ['06H', '07H', '08H', '12H', '16H', '17H', '18H', '19H', '20H'],
+      'Funcional': ['06H', '07H', '08H', '16H', '17H', '18H', '19H', '20H'],
+      'Natação': ['08H', '16H', '17H', '18H', '19H', '20H'],
+      'Hidro': ['07H', '18H']
+    };
+
+    const heroSlides = document.getElementById('heroSlides');
+    heroSlides.innerHTML = modalidades.map((item, index) => `
+      <div class="hero-slide absolute inset-0 ${index === 1 ? 'active' : ''}" style="background:${item.image}">
+        <div class="absolute inset-0 opacity-20 carbon"></div>
+        <div class="absolute bottom-24 right-8 hidden font-display text-[10vw] uppercase leading-none text-white/5 lg:block">${item.nome}</div>
+      </div>
+    `).join('');
+
+    const heroCardTitle = document.getElementById('heroCardTitle');
+    const heroCardIcon = document.getElementById('heroCardIcon');
+    const heroCardText = document.getElementById('heroCardText');
+    const heroDetailsBtn = document.getElementById('heroDetailsBtn');
+    let heroIndex = 1;
+
+    function setHero(index) {
+      heroIndex = index;
+      document.querySelectorAll('.hero-slide').forEach((slide, i) => slide.classList.toggle('active', i === index));
+      const item = modalidades[index];
+      heroCardTitle.textContent = item.nome;
+      heroCardIcon.textContent = item.icon;
+      heroCardText.textContent = item.resumo;
+      heroDetailsBtn.onclick = () => openDetail(item.slug);
+    }
+
+    setInterval(() => setHero((heroIndex + 1) % modalidades.length), 4200);
+    setHero(heroIndex);
+
+    const modalidadesGrid = document.getElementById('modalidadesGrid');
+    modalidadesGrid.innerHTML = modalidades.map((item, index) => `
+      <button class="modalidade-card reveal group relative overflow-hidden rounded-[2.4rem] border border-white/12 bg-white/[.045] p-6 text-left shadow-soft transition duration-300 hover:-translate-y-2 hover:border-ctRed/70" data-slug="${item.slug}">
+        <div class="absolute inset-0 opacity-0 transition group-hover:opacity-100" style="background:${item.image}"></div>
+        <div class="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-ctRed/20 blur-3xl transition group-hover:bg-ctRed/40"></div>
+        <div class="relative">
+          <div class="mb-12 flex items-start justify-between gap-4">
+            <span class="rounded-full bg-ctRed px-4 py-2 text-xs font-black uppercase tracking-[.24em] shadow-red">${item.tag}</span>
+            <span class="text-4xl">${item.icon}</span>
+          </div>
+          <p class="card-number stroke-text font-display text-7xl leading-none transition">0${index + 1}</p>
+          <h3 class="mt-3 font-display text-4xl uppercase title-strong">${item.nome}</h3>
+          <p class="mt-4 min-h-20 leading-7 text-white/65">${item.resumo}</p>
+          <span class="mt-7 inline-flex rounded-2xl bg-white px-5 py-3 font-black uppercase tracking-wide text-black transition group-hover:bg-ctRed group-hover:text-white">Abrir página</span>
+        </div>
+      </button>
+    `).join('');
+
+    document.querySelectorAll('.modalidade-card').forEach(card => {
+      card.addEventListener('click', () => openDetail(card.dataset.slug));
+    });
+
+    const scheduleTabs = document.getElementById('scheduleTabs');
+    const scheduleContent = document.getElementById('scheduleContent');
+    let activeSchedule = 'Crossfit';
+
+    function renderSchedule() {
+      scheduleTabs.innerHTML = Object.keys(schedules).map(name => `
+        <button class="schedule-btn rounded-xl px-4 py-2 font-display uppercase tracking-wide transition ${activeSchedule === name ? 'tab-active' : 'bg-white/10 text-white/65 hover:bg-white/15'}" data-name="${name}">${name}</button>
+      `).join('');
+
+      scheduleContent.innerHTML = schedules[activeSchedule].map(time => `
+        <div class="carbon rounded-2xl border border-white/10 p-4 text-center">
+          <p class="font-display text-3xl title-strong">${time}</p>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.schedule-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeSchedule = btn.dataset.name;
+          renderSchedule();
+        });
+      });
+    }
+    renderSchedule();
+
+    const pricingGrid = document.getElementById('pricingGrid');
+    pricingGrid.innerHTML = planos.map(plano => `
+      <article class="reveal relative overflow-hidden rounded-[2.3rem] border ${plano.destaque ? 'border-ctRed shadow-red' : 'border-white/12'} bg-white/[.045] p-6 shadow-soft">
+        ${plano.destaque ? '<span class="absolute right-5 top-5 rounded-full bg-ctRed px-3 py-1 text-xs font-black uppercase tracking-widest">Mais intenso</span>' : ''}
+        <p class="font-display text-4xl uppercase title-strong">${plano.nome}</p>
+        <div class="mt-7 space-y-3">
+          ${plano.opcoes.map(opcao => `
+            <div class="carbon rounded-3xl border border-white/10 p-5">
+              <p class="font-black uppercase tracking-widest text-ctRed">${opcao.freq}</p>
+              <p class="mt-2 font-display text-5xl title-strong">${opcao.valor}</p>
+            </div>
+          `).join('')}
+        </div>
+        <a href="https://api.whatsapp.com/message/GMDQE72VY6UHP1" target="_blank" class="mt-6 block rounded-2xl bg-ctRed px-5 py-4 text-center font-display text-lg uppercase shadow-red transition hover:bg-red-600">Consultar plano</a>
+      </article>
+    `).join('');
+
+    function openDetail(slug) {
+      const item = modalidades.find(m => m.slug === slug) || modalidades[0];
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById('modalidadePage').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      document.getElementById('detailHero').style.background = item.image;
+      document.getElementById('detailEyebrow').textContent = item.tag;
+      document.getElementById('detailTitle').textContent = item.nome;
+      document.getElementById('detailSubtitle').textContent = item.resumo;
+      document.getElementById('detailAbout').textContent = item.about;
+      document.getElementById('detailAudience').textContent = item.audience;
+
+      document.getElementById('detailBenefits').innerHTML = item.benefits.map(benefit => `
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <p class="font-black uppercase tracking-wide text-white/85">✓ ${benefit}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('detailStats').innerHTML = item.stats.map(stat => `
+        <div class="rounded-2xl border border-white/10 bg-black/40 p-4 text-white/75">${stat}</div>
+      `).join('');
+
+      document.getElementById('detailSchedule').innerHTML = item.schedule.map(time => `
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-center">
+          <p class="font-display text-2xl title-strong">${time}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('otherModalidades').innerHTML = modalidades
+        .filter(m => m.slug !== item.slug)
+        .map(m => `<button class="other-btn w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-black uppercase tracking-wide text-white/70 transition hover:bg-ctRed hover:text-white" data-slug="${m.slug}">${m.icon} ${m.nome}</button>`)
+        .join('');
+
+      document.querySelectorAll('.other-btn').forEach(btn => btn.addEventListener('click', () => openDetail(btn.dataset.slug)));
+    }
+
+    function goHome() {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById('inicio').classList.add('active');
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 20);
+    }
+
+    document.getElementById('backHome').addEventListener('click', goHome);
+    document.querySelectorAll('.nav-home').forEach(link => link.addEventListener('click', (e) => {
+      e.preventDefault();
+      goHome();
+    }));
+
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    document.querySelectorAll('#menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById('inicio').classList.add('active');
+        if (window.innerWidth < 1024) menu.classList.add('hidden');
+      });
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: .12 });
+
+    document.querySelectorAll('.reveal').forEach(item => revealObserver.observe(item));
+
+    const sections = document.querySelectorAll('#inicio section[id]');
+    const links = document.querySelectorAll('.menu-link');
+
+    function setActiveMenu() {
+      let current = 'inicio';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 150) current = section.id;
+      });
+      links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${current}`));
+    }
+
+    window.addEventListener('scroll', setActiveMenu);
+    setActiveMenu();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
